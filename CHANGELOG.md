@@ -1,3 +1,18 @@
+## v1.3.4 (2026-09-08)
+
+### ✨ Features
+- [code] Added the Nx `baseRef` render option, which resolves a merge base with `HEAD` via `scopeNxChangesToRelease` and scopes both Nx change metadata and code diffs to branch-local commits
+
+### 🐛 Bug Fixes
+- [code] Prevented divergent or stale release tags from leaking unrelated historical commits and repository-wide diffs into feature-branch release notes
+- [code] Added `truncateDiffStat` to cap `git diff --stat` output at 10,000 characters (or the configured diff limit when smaller), closing a prompt-budget bypass in `getDiffContext`
+
+### 🛠️ Improvements
+- [code] Enhanced `scopeNxChangesToRelease` to report a `strategy` (`base-ref` vs `tag`) and throw a descriptive error when a configured `baseRef` cannot be resolved, instead of silently falling back
+- [code] Expanded the Nx renderer's console scope logging to include the strategy used and configured base ref
+- [test] Added regression coverage proving configured branch-base scoping excludes stale commit descriptions and diff content from the AI prompt
+- [docs] Documented `baseRef` branch-base release scoping and the new diff-stat budget in README and CHANGELOG
+
 ## v1.3.3 (2026-08-31)
 
 ### ✨ Features
