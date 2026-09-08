@@ -438,6 +438,34 @@ test('Nx renderer scopes changes and diffs to the configured branch base', async
   });
 });
 
+test('Nx renderer treats branch-local commits hidden by Nx as no changes', async () => {
+  await withDivergentReleaseBase(async ({ staleHash }) => {
+    await withFakeOpenAI('Unexpected AI output', async ({
+      baseUrl,
+      getReceivedBody,
+    }) => {
+      const renderer = createRenderer(
+        [
+          {
+            type: 'feat',
+            scope: 'dashboards',
+            description: 'STALE_HISTORICAL_CHANGE add height controls',
+            affectedProjects: '*',
+            shortHash: staleHash,
+          },
+        ],
+        baseUrl,
+        { baseRef: 'release-base' },
+      );
+
+      const output = await renderer.render();
+
+      assert.equal(output, '');
+      assert.equal(getReceivedBody(), undefined);
+    });
+  });
+});
+
 test('Nx renderer bounds diff stats as part of the AI context budget', async () => {
   await withLargeDiffStat(async ({ currentHash }) => {
     await withFakeOpenAI('### ✨ Features\n- Added release files', async ({

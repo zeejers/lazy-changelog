@@ -106,19 +106,16 @@ function scopeNxChangesToRelease(
     const matchedHashCount = scopedChanges.filter((change) => change.shortHash).length;
 
     if (hashedChangeCount > 0 && matchedHashCount === 0) {
-      if (baseRef) {
-        throw new Error(
-          `No Nx change hashes matched the branch-local release range ${range}`,
-        );
+      if (!baseRef) {
+        return {
+          changes,
+          from,
+          to,
+          range,
+          applied: false,
+          strategy: "tag",
+        };
       }
-      return {
-        changes,
-        from,
-        to,
-        range,
-        applied: false,
-        strategy: "tag",
-      };
     }
 
     return {

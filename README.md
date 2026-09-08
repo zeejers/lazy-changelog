@@ -119,6 +119,9 @@ Add to `nx.json`:
 `baseRef` is recommended when releases are cut from feature branches. The Nx
 renderer resolves the merge base between that ref and `HEAD`, then uses the
 same branch-local range for both the Nx change list and optional code diffs.
+If every branch-local commit is hidden by Nx's conventional-commit settings,
+the renderer produces Nx's configured no-change output instead of including
+stale changes from before the branch base.
 Without `baseRef`, the renderer retains tag-based release scoping.
 
 Then just run:
